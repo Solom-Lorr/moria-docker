@@ -26,7 +26,7 @@ jobs:
       # Login against a Github registry except on PR
       - name: Log into github container registry
         if: github.event_name != 'pull_request'
-        uses: docker/login-action@v3.3.0
+        uses: redhat-actions/podman-login@v1
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
@@ -35,11 +35,20 @@ jobs:
       # Login for Docker registry
       - name: Log into docker container registry
         if: github.event_name != 'pull_request'
-        uses: docker/login-action@v3.3.0
+        uses: redhat-actions/podman-login@v1
         with:
           registry: docker.io
-          username: ${{ vars.DOCKER_USERNAME }}
+          username: ${{ github.actor }}
           password: ${{ secrets.DOCKER_TOKEN }}
+
+      # Login for Quay registry
+      - name: Log into docker container registry
+        if: github.event_name != 'pull_request'
+        uses: redhat-actions/podman-login@v1
+        with:
+          registry: quay.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.QUAY_TOKEN }}
 
       # Build and push container image with Earthly (don't push on PR)
       - name: Build and push

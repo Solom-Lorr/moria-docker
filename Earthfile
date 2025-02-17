@@ -25,10 +25,10 @@ build:
     COPY entrypoint.sh /entrypoint.sh
     ENTRYPOINT ["/entrypoint.sh"]
 
-    SAVE IMAGE --cache-from=docker.io/$name:main --push \
-        docker.io/$name:$tag docker.io/$name:latest
-    SAVE IMAGE --cache-from=ghcr.io/$name:main --push \
-        ghcr.io/$name:$tag ghcr.io/$name:latest
+    FOR registry IN docker.io ghcr.io quay.io
+        SAVE IMAGE --cache-from=$registry/$name:main --push \
+            $registry/$name:$tag $registry/$name:latest
+    END
 
 full:
     FROM +build
@@ -37,10 +37,10 @@ full:
         +login "$STEAM_USERNAME" "$STEAM_PASSWORD" "$STEAM_GUARD" \
         +app_update "$APP_ID" validate +quit
 
-    SAVE IMAGE --cache-from=docker.io/$name:main-full --push \
-        docker.io/$name:$tag-full docker.io/$name:latest-full
-    SAVE IMAGE --cache-from=ghcr.io/$name:main-full --push \
-        ghcr.io/$name:$tag-full ghcr.io/$name:latest-full
+    FOR registry IN docker.io ghcr.io quay.io
+        SAVE IMAGE --cache-from=$registry/$name:main-full --push \
+            $registry/$name:$tag-full $registry/$name:latest-full
+    END
 
 all:
     BUILD +build
