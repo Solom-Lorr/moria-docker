@@ -1,0 +1,15 @@
+services:
+  moria:
+    container_name: moria
+    image: ghcr.io/bubylou/moria:latest
+    restart: unless-stopped
+    environment:
+      - UPDATE_ON_START=true
+      - RESET_SEED=false
+      - LISTEN_PORT=9877
+    ports:
+      - 9877:9877/udp
+    volumes:
+      - moria-app:/app/moria
+volumes:
+  moria-app:
