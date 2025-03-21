@@ -11,9 +11,9 @@ build:
     ENV APP_NAME=moria
     ENV APP_DIR="/app/moria"
     ENV UPDATE_ON_START=true
-    ENV RESET_SEED=false
+    ENV RESET_SEED=true
     ENV STEAM_USERNAME=anonymous
-    ENV LISTEN_PORT=7777
+    ENV LISTEN_PORT=9877
 
     COPY ./MoriaServerConfig.ini "$CONFIG_DIR/MoriaServerConfig.ini"
     RUN mkdir -p "$APP_DIR" \
